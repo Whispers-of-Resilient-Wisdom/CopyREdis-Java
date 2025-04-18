@@ -1,8 +1,12 @@
 package org.copy.redis.server.DataStructure;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashMap;
 import java.util.Map;
-
+@Getter
+@Setter
 public class RedisDict {
     private Map<String, String> dict;
 
