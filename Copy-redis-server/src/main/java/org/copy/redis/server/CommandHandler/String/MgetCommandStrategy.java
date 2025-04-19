@@ -26,7 +26,7 @@ public class MgetCommandStrategy extends RedisServerDS implements CommandStrateg
     static String get(String arg) {
 
         RedisObject redisObject = map.get(arg);
-        String f = "";
+        String f = null;
         if (redisObject != null) f = ((StringBuilder) redisObject.getPtr()).toString();
         return f;
 

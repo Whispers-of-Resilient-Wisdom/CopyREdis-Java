@@ -7,7 +7,7 @@ import org.copy.redis.server.DataStructure.RedisServerDS;
 import org.copy.redis.server.Encoder.RespEncoder;
 
 import java.util.Map;
-
+//hget key field
 public class HGetCommandStrategy extends RedisServerDS implements CommandStrategy {
     @Override
     public String execute(String[] args) {
@@ -16,7 +16,7 @@ public class HGetCommandStrategy extends RedisServerDS implements CommandStrateg
         }
         String key=args[1];
         String field=args[2];
-        String f="";
+        String f=null;
         if(!map.containsKey(key)){
             return RespEncoder.error("hget no key");
         }
@@ -30,7 +30,7 @@ public class HGetCommandStrategy extends RedisServerDS implements CommandStrateg
 
 
         }
-
-        return RespEncoder.simpleString(f);
+        System.out.println("hget:"+f);
+        return RespEncoder.bulkString(f);
     }
 }

@@ -2,69 +2,69 @@ package org.copy.redis.server.Correspond;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.copy.redis.server.Enity.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.*;
 
+import static org.copy.redis.server.CommandHandler.CommandContext.executeCommand;
 public class CommandProcessor {
     private static final BlockingQueue<Command> commandQueue = new LinkedBlockingQueue<>();
-    private static final Map<String, String> database = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
+    private static volatile Thread processorThread;
 
     static {
-        // 启动单线程处理命令
-        new Thread(() -> {
-            while (true) {
+        startProcessorThread();
+    }
+
+    private static void startProcessorThread() {
+        processorThread = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    Command cmd = commandQueue.take();  // 阻塞式取出
+                    Command cmd = commandQueue.take();
+                    logger.debug("Processing command by {}: {}",
+                            Thread.currentThread().getName(), cmd.getRawCommand());
                     handle(cmd);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    logger.info("Processor thread interrupted");
+                    break;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Command handling failed", e);
                 }
             }
-        }, "Redis-Command-Processor").start();
+        }, "Redis-Command-Processor");
+        processorThread.setDaemon(true); // 设为守护线程（可选）
+        processorThread.start();
     }
 
     public static void submit(Command command) {
-        commandQueue.offer(command);
+        if (!commandQueue.offer(command)) {
+            logger.warn("Command queue full, dropping: {}", command.getRawCommand());
+            sendErrorResponse(command, "-ERR server busy\r\n");
+        }
     }
 
     private static void handle(Command command) {
-        String[] parts=command.getRawCommand();
-        ChannelHandlerContext ctx = command.getCtx();
-
-        if (parts.length == 0) {
-            ctx.writeAndFlush("-ERR empty command\r\n");
+        String[] parts = command.getRawCommand();
+        if (parts == null || parts.length == 0) {
+            sendErrorResponse(command, "-ERR empty command\r\n");
             return;
         }
+        String response = executeCommand(parts);
+        command.getCtx().writeAndFlush(response);
+    }
 
-        String cmd = parts[0].toUpperCase();
-        switch (cmd) {
-            case "SET":
-                if (parts.length != 3) {
-                    ctx.writeAndFlush("-ERR wrong number of arguments for 'set'\r\n");
-                } else {
-                    database.put(parts[1], parts[2]);
-                    ctx.writeAndFlush("+OK\r\n");
-                }
-                break;
-            case "GET":
-                if (parts.length != 2) {
-                    ctx.writeAndFlush("-ERR wrong number of arguments for 'get'\r\n");
-                } else {
-                    String value = database.get(parts[1]);
-                    if (value != null) {
-                        ctx.writeAndFlush("$" + value.length() + "\r\n" + value + "\r\n");
-                    } else {
-                        ctx.writeAndFlush("$-1\r\n");
-                    }
-                }
-                break;
-            default:
-                ctx.writeAndFlush("-ERR unknown command\r\n");
+    private static void sendErrorResponse(Command cmd, String error) {
+        if (cmd != null && cmd.getCtx() != null) {
+            cmd.getCtx().writeAndFlush(error);
+        }
+    }
+
+    public static void shutdown() {
+        if (processorThread != null) {
+            processorThread.interrupt();
         }
     }
 }
-

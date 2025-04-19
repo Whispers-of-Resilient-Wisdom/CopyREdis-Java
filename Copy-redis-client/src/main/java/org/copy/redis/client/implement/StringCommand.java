@@ -64,6 +64,13 @@ public class StringCommand<V> extends abstractCommand<V> {
         try (Jedis jedis = pool.getResource()) {
             jedis.set("key", "value");
             System.out.println(jedis.get("key")); // 不会频繁断连
+            jedis.del("key");
+            System.out.println(jedis.get("key"));
+            jedis.get("key");
+            jedis.set("key", "value");
+            System.out.println(jedis.get("key"));
+            jedis.ttl("key");
+
         }
 
 

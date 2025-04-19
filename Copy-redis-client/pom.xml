@@ -35,5 +35,23 @@
         <version>1.7.32</version>
     </dependency>
     <!--redis连接jedis的日志-->
+<!--        测试类 测试并发 ，功能正常-->
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version> 5.11.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version> 5.11.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version> 4.2.2</version>
+        </dependency>
     </dependencies>
+
 </project>

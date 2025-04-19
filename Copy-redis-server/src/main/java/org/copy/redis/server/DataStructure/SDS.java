@@ -1,5 +1,8 @@
 package org.copy.redis.server.DataStructure;
 
+import lombok.Getter;
+
+@Getter
 public class SDS {
     private StringBuilder builder;
     //int capacity 存储字符串的字符序列 //对应builder.capacity()

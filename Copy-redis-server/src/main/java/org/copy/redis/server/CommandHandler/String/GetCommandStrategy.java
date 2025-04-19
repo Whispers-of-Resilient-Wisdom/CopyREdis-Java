@@ -3,8 +3,11 @@ package org.copy.redis.server.CommandHandler.String;
 
 import org.copy.redis.server.DataStructure.RedisObject;
 import org.copy.redis.server.DataStructure.RedisServerDS;
+import org.copy.redis.server.DataStructure.SDS;
 import org.copy.redis.server.Encoder.RespEncoder;
 import org.copy.redis.server.interfaces.CommandStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GetCommandStrategy extends RedisServerDS implements CommandStrategy {
 
@@ -15,9 +18,10 @@ public class GetCommandStrategy extends RedisServerDS implements CommandStrategy
         }
         String key = args[1];
         RedisObject redisObject = map.get(key);
-        String f = "";
-        if (redisObject != null) f = ((StringBuilder) redisObject.getPtr()).toString();
-        return RespEncoder.simpleString(f);
+        String f = null;
+        if (redisObject != null) f = ((SDS)(redisObject.getPtr())).getBuilder().toString();
+
+        return RespEncoder.bulkString(f);
 
     }
 }

@@ -17,12 +17,13 @@ public class IncreByCommandStrategy extends RedisServerDS implements CommandStra
         try {
             String key = args[1];
             String value = args[2];
-            long i = Integer.parseInt(value);
+            long i = Long.parseLong(value);
             boolean flag=map.containsKey(key);
             if(!flag) set(key, value);
             if (flag) {
                 RedisObject redisObject = map.get(key);
-                i += Integer.parseInt(((StringBuilder)redisObject.getPtr()).toString());
+                StringBuilder s=((SDS) (redisObject.getPtr())).getBuilder();//没转好
+                i += Long.parseLong(s.toString());
             }
             return RespEncoder.integer(i);
         }catch (Exception e) {
