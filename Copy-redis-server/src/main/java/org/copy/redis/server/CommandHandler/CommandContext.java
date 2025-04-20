@@ -2,6 +2,7 @@ package org.copy.redis.server.CommandHandler;
 
 import org.copy.redis.server.CommandHandler.Common.*;
 import org.copy.redis.server.CommandHandler.Hash.*;
+import org.copy.redis.server.CommandHandler.Set.*;
 import org.copy.redis.server.CommandHandler.String.*;
 import org.copy.redis.server.interfaces.CommandStrategy;
 
@@ -75,10 +76,20 @@ public class CommandContext {
       strategyMap.put(constant.HKEYS.getConstant(), new HKeysCommandStrategy());
       strategyMap.put(constant.HEXISTS.getConstant(), new HExistsCommandStrategy());
 
+      //Set
+      strategyMap.put(constant.SADD.getConstant(), new SAddCommandStrategy());
+      strategyMap.put(constant.SCARD.getConstant(), new SCardCommandStrategy());
+      strategyMap.put(constant.SDIFF.getConstant(), new SDiffCommandStrategy());
+      strategyMap.put(constant.SDIFFSTORE.getConstant(), new SDiffStoreCommandStrategy());
+      strategyMap.put(constant.SINTER.getConstant(), new SInterCommandStrategy());
+      strategyMap.put(constant.SINTERSTORE.getConstant(), new SInterStoreCommandStrategy());
+      strategyMap.put(constant.SISMEMBER.getConstant(), new SIsmemberCommandStrategy());
+      strategyMap.put(constant.SMEMBERS.getConstant(), new SMembersCommandStrategy());
+      strategyMap.put(constant.SREM.getConstant(), new SREmCommandStrategy());
+      strategyMap.put(constant.SUNION.getConstant(), new SUnionCommandStrategy());
+      strategyMap.put(constant.SUNIONSTORE.getConstant(), new SUnionStoreCommandStrategy());
 
-
-
-}
+      }
 
         public static String executeCommand(String[] args) {
             String cmd = args[0].toUpperCase();
