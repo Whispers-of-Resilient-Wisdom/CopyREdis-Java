@@ -1,0 +1,93 @@
+# Supported Commands
+
+- Keys
+    - del
+    - expire
+    - expireat
+    - ttl
+    - pttl
+    - exists
+    - type
+- Server
+    - flushall
+    - keys
+    - copy
+- String
+    - set
+    - setnx
+    - setex
+    - psetex
+    - mset
+    - mget
+    - msetnx
+    - get
+    - getex
+    - getset
+    - getdel
+    - incr
+    - incrby
+    - decr
+    - decrby
+    - randomkey
+- List
+    - lpush
+    - lpushx
+    - rpush
+    - rpushx
+    - lpop
+    - rpop
+    - rpoplpush
+    - lrem
+    - llen
+    - lindex
+    - lset
+    - lrange
+    - ltrim
+    - linsert
+- Hash
+    - hset
+    - hsetnx
+    - hget
+    - hexists
+    - hdel
+    - hlen
+    - hstrlen
+    - hmget
+    - hmset
+    - hkeys
+    - hvals
+    - hgetall
+    - hincrby
+- Set
+    - sadd
+    - sismember
+    - srem
+    - spop
+    - scard
+    - smembers
+    - sinter
+    - sinterstore
+    - sunion
+    - sunionstore
+    - sdiff
+    - sdiffstore
+    - srandmember
+- SortedSet
+    - zadd
+    - zscore
+    - zincrby
+    - zrank
+    - zcount
+    - zrevrank
+    - zcard
+    - zrange
+    - zrevrange
+    - zrangebyscore
+    - zrevrangebyscore
+    - zrem
+    - zremrangebyscore
+    - zremrangebyrank
+    - zlexcount
+    - zrangebylex
+    - zremrangebylex
+    - zrevrangebylex
