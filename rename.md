@@ -29,7 +29,7 @@ java redis 默认监听 0.0.0.0:6399，可以使用 java redis使用数据库
 
 ## 支持的命令
 
-请参考 
+请参考[命令] (https://github.com/Whispers-of-Resilient-Wisdom/CopyREdis-Java/blob/master/command.md)
 
 
 
