@@ -9,10 +9,10 @@ Copy Redis 是一个用 java 语言实现的 Redis 服务器。本项目旨在�
 ### 安装步骤
 
 ```bash
-git clone https://github.com/yourname/jredis.git
-cd jredis
-mvn package
-java -jar target/jredis-server.jar
+git clone https://github.com/Whispers-of-Resilient-Wisdom/CopyREdis-Java.git
+cd CopyREdis-Java
+git pull origin master(假设设置为origin)
+
 ```
 
 关键功能:
@@ -20,7 +20,7 @@ java -jar target/jredis-server.jar
 - 自动过期功能(TTL)
 - 并行引擎, 无需担心您的操作会阻塞整个服务器.
 
-可以在[我的博客]( )了解更多关于
+可以在[我的博客](https://www.cnblogs.com/ppx-is-me )了解更多关于
 java redis 的信息。
 
 # 运行 Java redis
