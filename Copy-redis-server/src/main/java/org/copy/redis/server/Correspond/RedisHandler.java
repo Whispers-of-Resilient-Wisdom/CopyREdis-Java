@@ -3,15 +3,20 @@ package org.copy.redis.server.Correspond;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.copy.redis.server.Enity.Command;
+import org.copy.redis.server.Enity.ReceiveCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RedisHandler extends SimpleChannelInboundHandler<String[]> {
+//这里主要处理关于参数出错
+//处理命令步骤--收到命令，多线程判断参数合法-->单线程惰性删除->处理命令
+public class RedisHandler extends SimpleChannelInboundHandler<ReceiveCommand> {
     private static final Logger logger = LoggerFactory.getLogger(RedisHandler.class);
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String []msg) {
 
-      CommandProcessor.submit(new Command(ctx, msg));
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, ReceiveCommand msg) {
+        String[] command = msg.getCommand();
+
+      CommandProcessor.submit(new Command(ctx, command, msg.getRespCommand().toString()));
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

@@ -1,8 +1,10 @@
 package org.copy.redis.server.DataStructure;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class SDS {
     private StringBuilder builder;
     //int capacity 存储字符串的字符序列 //对应builder.capacity()
@@ -15,13 +17,7 @@ public class SDS {
         return free;
     }
 
-    public StringBuilder getBuilder() {
-        return builder;
-    }
 
-    public void setBuilder(StringBuilder builder) {
-        this.builder = builder;
-    }
 
     static SDS SDSNew(){
          SDS f=new SDS();

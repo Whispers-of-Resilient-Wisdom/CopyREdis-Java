@@ -1,4 +1,7 @@
 package org.copy.redis.server.Encoder;
+
+import java.nio.charset.StandardCharsets;
+
 public class RespEncoder {
 
     /**
@@ -32,7 +35,8 @@ public class RespEncoder {
      */
     public static String bulkString(String val) {
         if (val == null) return "$-1\r\n"; // 表示 Redis 的空值 null
-        return "$" + val.length() + "\r\n" + val + "\r\n";
+        byte[] bytes = val.getBytes(StandardCharsets.UTF_8);
+        return "$" + bytes.length+ "\r\n" + val + "\r\n";
     }
 
     /**
@@ -41,10 +45,12 @@ public class RespEncoder {
     public static String array(String[] values) {
         if (values == null) return "*-1\r\n"; // 空数组
         StringBuilder sb = new StringBuilder();
+
         sb.append("*").append(values.length).append("\r\n");
         for (String v : values) {
             sb.append(bulkString(v)); // 每个元素都是一个 bulkString 类型
         }
+
         return sb.toString();
     }
 }

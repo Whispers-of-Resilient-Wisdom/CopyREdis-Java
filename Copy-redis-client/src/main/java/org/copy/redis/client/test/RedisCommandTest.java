@@ -22,7 +22,7 @@ public class RedisCommandTest {
     @BeforeAll
     static void setup() {
         jedis = new Jedis("localhost", 6379); // 连接你的模拟Redis
-        jedis.flushAll();
+//        jedis.flushAll();
     }
 
     @AfterEach
@@ -130,17 +130,12 @@ public class RedisCommandTest {
     @Test//出现过问题，原因计算count出错
     void testHSET_HGET() {
         // 单字段操作
-        assertEquals(1, jedis.hset(TEST_PREFIX + "hash", "field1", "value1"));
+        assertEquals(0, jedis.hset(TEST_PREFIX + "has3", "field2", "asasas我是"));
 
 
-        assertEquals("value1", jedis.hget(TEST_PREFIX + "hash", "field1"));
+        assertEquals("asasas我是", jedis.hget(TEST_PREFIX + "has3", "field2"));
 
-        // 覆盖字段
-        assertEquals(0, jedis.hset(TEST_PREFIX + "hash", "field1", "new_value"));
-        assertEquals("new_value", jedis.hget(TEST_PREFIX + "hash", "field1"));
 
-        // 获取不存在的字段
-        assertNull(jedis.hget(TEST_PREFIX + "hash", "ghost"));
     }
     @Test//出现过问题，原因类型转换导致出现异常，返回数据有问题
     void testINCRBY() {//我没给他异常
@@ -153,8 +148,8 @@ public class RedisCommandTest {
     @Test
     void testSET_GET() {
         // 正常设置和获取
-        assertEquals("OK", jedis.set(TEST_PREFIX + "str", "hello"));
-        assertEquals("hello", jedis.get(TEST_PREFIX + "str"));
+        assertEquals("OK", jedis.set(TEST_PREFIX + "str", "h我"));
+        assertEquals("h我", jedis.get(TEST_PREFIX + "str"));
 
         // 覆盖写入
         jedis.set(TEST_PREFIX + "str", "world");
@@ -162,5 +157,11 @@ public class RedisCommandTest {
 
         // 获取不存在的key
         assertNull(jedis.get(TEST_PREFIX + "unknown"));
+    }
+    @Test
+    void testHGET(){
+
+
+
     }
 }

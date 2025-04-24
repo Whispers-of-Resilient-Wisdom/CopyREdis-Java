@@ -8,6 +8,7 @@
   <modules>
     <module>Copy-redis-client</module>
     <module>Copy-redis-server</module>
+      <module>redis-slave</module>
   </modules>
 
 </project>

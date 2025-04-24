@@ -1,17 +1,7 @@
-
-  A[启动服务端] --> B[监听端口]
-  B --> C[等待客户端连接]
-  C --> D[接收客户端请求]
-  D --> E[解析RESP协议]
-  E --> F[执行命令]
-  F --> G[操作内存数据结构]
-  G --> H[生成响应]
-  H --> I[返回结果给客户端]
-  I --> C
-
-  J[启动客户端] --> K[连接服务端]
-  K --> L[发送RESP格式命令]
-  L --> M[等待响应]
-  M --> N[解析响应]
-  N --> O[显示结果]
-  O --> L
+预计先实现偏移量的问题，和aof的判定，减少运算消耗
+//主从前提
+ServerRoleManager	管理当前角色：MASTER / SLAVE
+SlaveReplicator	作为从机连接主机，发起 PSYNC，同步数据
+ReplicationServer	主机监听从机连接，发送 RDB/命令 backlog
+RoleChangeCommand	实现用户命令：如 SLAVEOF ip port
+DynamicNettyBootstrap	控制启动/关闭复制用的 Netty 客户端或服务端

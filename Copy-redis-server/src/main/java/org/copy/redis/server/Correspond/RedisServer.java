@@ -10,8 +10,10 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 import org.copy.redis.server.Encoder.RespCommandDecoder;
+import org.copy.redis.server.persistence.AofManager;
 
 public class RedisServer {
+
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -38,11 +40,14 @@ public class RedisServer {
 
             ChannelFuture future = bootstrap.bind(6379).sync();
             System.out.println("Redis Server started on port 6379");
+            AofManager aofManager = AofManager.getInstance();
+            aofManager.loadAof();
             future.channel().closeFuture().sync();
         } finally {
             boss.shutdownGracefully();
             worker.shutdownGracefully();
         }
+
     }
 
 
